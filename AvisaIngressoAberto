@@ -1,0 +1,78 @@
+from urllib.request import urlopen
+from urllib.request import urlopen, Request
+from urllib.error import HTTPError
+from bs4 import BeautifulSoup
+from urllib.request import urlopen
+from urllib.error import HTTPError
+from urllib.error import URLError
+from bs4 import BeautifulSoup
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.base import MIMEBase
+from email import encoders
+import smtplib
+import requests
+import json
+from time import sleep
+
+html = Request("https://www.sympla.com.br/culto-domingo-bola-de-neve-sede---noite__1176259", headers={'User-Agent' : '*'})
+response = urlopen(html)
+html2 = response.read()
+
+soup = BeautifulSoup(html2, "html.parser")
+
+imagens = soup.find('span', {"class": "icon-circle-minus opt"})
+
+if imagens:
+    print("Existe")
+    fromaddr = "docente.luiza@gmail.com"
+    toaddr  = 'docente.luiza@gmail.com'
+    msg = MIMEMultipart()
+    msg['From'] = fromaddr 
+    msg['To'] = toaddr
+    msg['Subject'] = "ingresso aberto"
+    #corpo do email com anexo
+    body = "\nCorpo da mensagem"
+
+    #credenciais e acesso ao servidor do gmail
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.starttls()
+    server.login(fromaddr, "senha")    # colllllllllllllllllllllllllllllllllloque sua senha 
+    text = msg.as_string()
+    server.sendmail(fromaddr, toaddr, text)
+    server.quit()
+    print('\nEmail enviado com sucesso!')
+
+
+else:
+    print("não existe")
+
+
+
+
+# try:
+#     html2 = response.read()
+#     print("oi")
+#     if html2:
+#         print("ok")
+
+
+#         fromaddr = "docente.luiza@gmail.com"
+#         toaddr  = 'docente.luiza@gmail.com'
+#         msg = MIMEMultipart()
+#         msg['From'] = fromaddr 
+#         msg['To'] = toaddr
+#         msg['Subject'] = "alarme falso 35"
+#         #corpo do email com anexo
+#         body = "\nCorpo da mensagem"
+
+#         #credenciais e acesso ao servidor do gmail
+#         server = smtplib.SMTP('smtp.gmail.com', 587)
+#         server.starttls()
+#         server.login(fromaddr, "SangueVive@12")    # colllllllllllllllllllllllllllllllllloque sua senha 
+#         text = msg.as_string()
+#         server.sendmail(fromaddr, toaddr, text)
+#         server.quit()
+#         print('\nEmail enviado com sucesso!')
+# except:
+#     exit()
